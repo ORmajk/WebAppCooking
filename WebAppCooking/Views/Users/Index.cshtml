@@ -1,0 +1,22 @@
+﻿@model IEnumerable<WebAppCooking.Models.User>
+
+<h2>Users </h2>
+<div class="container">
+    <table class=" table table-bordered">
+        <thead class=" table-light">
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <th>
+                        @item.Name
+                    </th>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
