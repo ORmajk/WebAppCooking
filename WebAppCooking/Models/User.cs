@@ -8,10 +8,13 @@ namespace WebAppCooking.Models
         [Key]
         public int IdUser { get; set; }
         [Required]
+        [StringLength(50)]
         public string? Login { get; set; }
         [Required]
+        [StringLength(50)]
         public string? Password { get; set; }
         [Required]
+        [StringLength(50)]
         public string? Name { get; set; }
         [Range(18, 100)]
         public int Age { get; set; }

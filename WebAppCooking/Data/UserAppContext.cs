@@ -9,5 +9,6 @@ namespace WebAppCooking.Data
         public UserAppContext(DbContextOptions<UserAppContext> options): base(options) { } 
         
         public DbSet<User> users { get; set; }
+        public DbSet<Role> roles { get; set; }
     }
 }

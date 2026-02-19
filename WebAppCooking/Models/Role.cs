@@ -7,6 +7,7 @@ namespace WebAppCooking.Models
         [Key]
         public int IdRole { get; set; }
         [Required]
+        [StringLength(50)]
         public string? RoleName { get; set; }
         public ICollection<User>? Users { get; set; }
     }
