@@ -16,5 +16,7 @@ namespace WebAppCooking.Models
         public int Calories { get; set; }
         [Required]
         public int IdCategoryIngredient { get; set; }
+        public ICollection<RecipeIngredient>? RecipeIngredients { get; set; }
+
     }
 }
