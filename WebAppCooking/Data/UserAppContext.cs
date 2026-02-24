@@ -10,6 +10,10 @@ namespace WebAppCooking.Data
         
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
-
+        public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
+        public DbSet<RecipeType> RecipeTypes { get; set; }
+        public DbSet<Author> Authorities { get; set; } 
     }
 }
