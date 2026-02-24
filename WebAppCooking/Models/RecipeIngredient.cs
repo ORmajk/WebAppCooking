@@ -1,6 +1,6 @@
 ﻿namespace WebAppCooking.Models
 {
-    public class DisheType
+    public class RecipeIngredients
     {
     }
 }

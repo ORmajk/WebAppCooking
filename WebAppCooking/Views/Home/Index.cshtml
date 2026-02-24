@@ -10,30 +10,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Главная</title>
+    <link rel="stylesheet" href="~/css/StyleMenu.css"/>
 </head>
 <body style="background-color: #FFAA00">
     <div style="text-align: center; margin-top: 50px;">
+        <div class="auth-section">
+            <img src="~/images/Gerb.png"
+                 alt="Логотип"
+                 class="auth-image">
 
-        <img src="/images/Gerb.png"
-             alt="Логотип" />
+            <div class="auth-title">Добро пожаловать!</div>
 
-        <h1>Добро пожаловать!</h1>
+            <a asp-controller="Account" asp-action="Login" class="auth-button">Авторизация</a>
+            <a asp-controller="Account" asp-action="Register" class="auth-button">Регистрация</a>
 
-        <div style="margin-top: 30px; display: flex; flex-direction: column; align-items: center; width: 100%;">
-            <a href="/Authoriz"
-               style="display: block; width: 300px; padding: 15px 20px; margin: 10px 0;
-              background: #FF9640; color: white; text-decoration: none;
-              text-align: center; border-radius: 8px; font-size: 18px;
-              transition: background 0.3s ease;"
-                Авторизация
-            </a>
-
-            <a href="/Register"
-               style="display: block; width: 300px; padding: 15px 20px; margin: 10px 0;
-              background: #FF9640; color: white; text-decoration: none;
-              text-align: center; border-radius: 8px; font-size: 18px;
-              transition: background 0.3s ease;"
-            </a>
         </div>
     </div>
 </body>
