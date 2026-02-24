@@ -16,10 +16,9 @@ namespace WebAppCooking.Models
         [Required]
         [StringLength(50)]
         public string? Name { get; set; }
-        [Range(18, 100)]
         public int Age { get; set; }
         public int IdRole {  get; set; }
         [ForeignKey("IdRole")]
-        public Role? Role { get; set; }
+        public virtual Role? Role { get; set; }
     }
 }

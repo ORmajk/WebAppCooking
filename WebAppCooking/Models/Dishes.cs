@@ -5,10 +5,14 @@ namespace WebAppCooking.Models
     public class Dishes
     {
         [Key]
-        public int Id { get; set; }
+        public int IdDishe { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string? DisheName { get; set; }
         [Required]
         [StringLength(100)]
-        public string? DisheName { get; set; }
-
+        public string? DisheDescription { get; set; }
+        [Required]
+        public int? DisheType { get; set; }
     }
 }
