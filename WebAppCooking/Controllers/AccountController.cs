@@ -66,10 +66,10 @@ public class AccountController : Controller
             var user = new User
             {
                 Login = model.Login,
-                Password = model.Password, // В реальном проекте нужно хешировать пароль!
+                Password = model.Password,
                 Name = model.Name,
                 Age = model.Age,
-                IdRole = 1 // Обычная роль пользователя (предполагаем, что IdRole=1 - это обычный пользователь)
+                IdRole = 2 
             };
 
             _context.Users.Add(user);

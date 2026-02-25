@@ -14,6 +14,6 @@ namespace WebAppCooking.Data
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
         public DbSet<RecipeType> RecipeTypes { get; set; }
-        public DbSet<Author> Authorities { get; set; } 
+        public DbSet<Author> Authors { get; set; } 
     }
 }

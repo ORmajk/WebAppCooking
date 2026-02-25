@@ -1,0 +1,176 @@
+﻿
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    background-color: #FFAA00;
+}
+
+.site-title {
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.site-nav a {
+    color: #333;
+    text-decoration: none;
+    margin-left: 30px;
+    font-size: 16px;
+}
+
+    .site-nav a:hover {
+        color: #FF8C42;
+    }
+
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.auth-header {
+    background-color: #f0f0f0;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.auth-title {
+    color: #333;
+    font-size: 20px;
+    font-weight: normal;
+    margin: 0;
+}
+
+.auth-body {
+    padding: 30px;
+}
+
+.auth-field-group {
+    margin-bottom: 20px;
+}
+
+.auth-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.auth-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+    .auth-input:focus {
+        border-color: #FF8C42;
+        outline: none;
+    }
+
+/* Сообщения об ошибках */
+.auth-field-error {
+    display: block;
+    margin-top: 5px;
+    color: #d32f2f;
+    font-size: 12px;
+}
+
+.auth-validation-summary {
+    background: #ffebee;
+    border: 1px solid #ffcdd2;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 20px;
+    color: #d32f2f;
+    font-size: 13px;
+}
+
+
+/* Группа кнопок */
+.auth-button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Кнопка входа */
+.auth-btn-login {
+    width: 100%;
+    padding: 12px;
+    background-color: #FF9640;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid #45a049;
+}
+
+    .auth-btn-login:hover {
+        background-color: #FF9639;
+    }
+
+/* Кнопка регистрации */
+.auth-btn-register {
+    width: 100%;
+    padding: 12px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+    .auth-btn-register:hover {
+        background-color: #e0e0e0;
+        text-decoration: none;
+        color: #333;
+    }
+
+/* Адаптивность */
+@media (max-width: 500px) {
+    .site-header {
+        padding: 15px 20px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .site-nav {
+        margin-top: 10px;
+    }
+
+        .site-nav a {
+            margin: 0 10px;
+        }
+
+    .auth-body {
+        padding: 20px;
+    }
+}

@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Добавляем контекст базы данных
 builder.Services.AddDbContext<UserAppContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
 
 // Добавляем сессии
 builder.Services.AddDistributedMemoryCache();
