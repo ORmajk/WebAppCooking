@@ -89,7 +89,6 @@ html, body {
         outline: none;
     }
 
-/* Сообщения об ошибках */
 .auth-field-error {
     display: block;
     margin-top: 5px;
@@ -108,14 +107,12 @@ html, body {
 }
 
 
-/* Группа кнопок */
 .auth-button-group {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-/* Кнопка входа */
 .auth-btn-login {
     width: 100%;
     padding: 12px;
@@ -133,7 +130,6 @@ html, body {
         background-color: #FF9639;
     }
 
-/* Кнопка регистрации */
 .auth-btn-register {
     width: 100%;
     padding: 12px;
@@ -154,7 +150,6 @@ html, body {
         color: #333;
     }
 
-/* Адаптивность */
 @media (max-width: 500px) {
     .site-header {
         padding: 15px 20px;
