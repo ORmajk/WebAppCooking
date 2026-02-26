@@ -1,39 +1,103 @@
 ﻿@model IEnumerable<WebAppCooking.Models.User>
+
+@{
+    ViewData["Title"] = "Управление пользователями";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Управление пользователями</title>
     <link rel="stylesheet" href="~/css/StyleUsers.css" />
 </head>
-    <body>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Логин</th>
-                    <th>Пароль</th>
-                    <th>Имя</th>
-                    <th>Возраст</th>
-                    <th>Роль</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.Login</td>
-                        <td>@item.Age</td>
-                        <td>@item.Name</td>
-                        <td>@item.Age</td>
-                        <td>
-                            @if (item.Role != null)
-                            {
-                                @item.Role.RoleName
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </body>
+<body style="background-color: #FFAA00">
+    <div class="auth-wrapper">
+        <div class="auth-container" style="max-width: 1200px;">
+            <h4 class="auth-title admin-title" style=" margin: 0; font-size: 1.5rem; font-weight: 600; color: white;">
+                Управление пользователями
+            </h4>
+
+            <div class="toolbar">
+                        <a asp-action="Create" class="btn-create" >
+                            Добавить нового пользователя
+                        </a>
+            </div>
+
+                <div class="auth-body">
+                    @if (!Model.Any())
+                    {
+                        <div class="empty-state">
+                            <div class="empty-icon"></div>
+                            <h5>Пользователи не найдены</h5>
+                            <p>Нажмите кнопку "Добавить нового пользователя", чтобы создать первого пользователя</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-container">
+                            <table class="user-table">
+                                <thead style="background-color: #FF9639">
+                                    <tr>
+                                        <th>Логин</th>
+                                        <th>Имя</th>
+                                        <th>Возраст</th>
+                                        <th>Роль</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td class="cell-login">@item.Login</td>
+                                            <td class="cell-name">@item.Name</td>
+                                            <td class="cell-age">@item.Age</td>
+                                            <td class="cell-role">
+                                                <span class="role-badge">@item.Role?.RoleName</span>
+                                            </td>
+                                            <td class="cell-actions">
+                                                <a asp-action="Edit" asp-route-id="@item.IdUser" 
+                                                   class="btn-action btn-edit"
+                                                   title="Редактировать">
+                                                    <span>Редактировать</span>
+                                                </a>
+                                                <a asp-action="ChangePassword" asp-route-id="@item.IdUser" 
+                                                   class="btn-action btn-password"
+                                                   style="background-color: #6b7280 "
+                                                   title="Сменить пароль">
+                                                    <span>Сменить пароль</span>
+                                                </a>
+                                                <a asp-action="Delete" asp-route-id="@item.IdUser" 
+                                                   class="btn-action btn-delete" 
+                                                   style="background-color: #ef4444 "
+                                                   title="Удалить"
+                                                   onclick="return confirm('Вы уверены, что хотите удалить пользователя @item.Login?')">
+                                                    <span>Удалить</span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="table-footer">
+                            <div class="table-info" style="background-color:#FF9639; color:white">
+                                Всего пользователей: <strong style="color:white" >@Model.Count()</strong>
+                            </div>
+                        </div>
+                    }
+                </div>
+        </div>
+    </div>
+</body>
 </html>

@@ -1,68 +1,420 @@
-﻿.auth-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+﻿/* Сброс стилей для кнопок */
+a, button {
+    text-decoration: none;
+    outline: none;
 }
 
-.auth-table-header {
-    background-color: var(--primary-color, #0d6efd);
+/* Основные контейнеры */
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+    background-color: #FFAA00;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.auth-header {
+    background-color: #FF9639;
+    padding: 20px 30px;
+}
+
+.auth-title {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 600;
     color: white;
 }
 
-.auth-table-th {
-    padding: 12px 15px;
-    text-align: left;
+.auth-body {
+    padding: 30px;
+}
+
+/* Панель инструментов */
+.toolbar {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-create {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #FF9639;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+    cursor: pointer;
+}
+
+    .btn-create:hover {
+        background-color: #FF9640;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+        color: white;
+    }
+
+/* Пустое состояние */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #f8f9fa;
+    border-radius: 16px;
+    margin: 20px 0;
+}
+
+.empty-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background-color: #dee2e6;
+    border-radius: 50%;
+    position: relative;
+}
+
+    .empty-icon::before,
+    .empty-icon::after {
+        content: '';
+        position: absolute;
+        background-color: #adb5bd;
+    }
+
+    .empty-icon::before {
+        width: 40px;
+        height: 6px;
+        top: 50%;
+        left: 20px;
+        transform: translateY(-50%);
+    }
+
+    .empty-icon::after {
+        width: 6px;
+        height: 40px;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+.empty-state h5 {
+    color: #495057;
+    font-size: 1.25rem;
+    margin-bottom: 10px;
     font-weight: 600;
 }
 
-.auth-table-body {
-    background-color: white;
+.empty-state p {
+    color: #6c757d;
+    margin-bottom: 0;
+    font-size: 1rem;
 }
 
-.auth-table-row {
-    border-bottom: 1px solid #e0e0e0;
-    transition: background-color 0.2s;
+/* Контейнер таблицы */
+.table-container {
+    overflow-x: auto;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin: 20px 0;
 }
 
-    .auth-table-row:hover {
+/* Таблица пользователей */
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    font-size: 0.95rem;
+}
+
+    .user-table thead {
         background-color: #f8f9fa;
+        border-bottom: 2px solid #e9ecef;
     }
 
-.auth-table-td {
-    padding: 12px 15px;
-    color: #333;
-}
+    .user-table th {
+        padding: 15px 20px;
+        font-weight: 600;
+        text-align: left;
+        color: #495057;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-.auth-role-badge {
-    display: inline-block;
-    padding: 4px 8px;
-    background-color: #e7f3ff;
-    color: var(--primary-color, #0d6efd);
-    border-radius: 4px;
-    font-size: 0.875rem;
+    .user-table tbody tr {
+        border-bottom: 1px solid #e9ecef;
+        transition: background-color 0.2s;
+    }
+
+        .user-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .user-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+    .user-table td {
+        padding: 15px 20px;
+        vertical-align: middle;
+        color: #212529;
+    }
+
+/* Ячейки с данными */
+.cell-login {
     font-weight: 500;
+    color: #495057;
 }
 
-.auth-role-badge-empty {
-    background-color: #f0f0f0;
-    color: #999;
+.cell-name {
+    color: #6c757d;
 }
 
-/* Темная тема (если нужна) */
-@media (prefers-color-scheme: dark) {
-    .auth-table-body {
-        background-color: #2d2d2d;
+.cell-age {
+    text-align: center;
+}
+
+.cell-role {
+    text-align: left;
+}
+
+/* Бейдж роли */
+.role-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background-color: #FF9639;
+    color: white;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+/* Ячейка с действиями */
+.cell-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* Базовый стиль для всех кнопок действий */
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .btn-action i {
+        font-size: 0.9rem;
     }
 
-    .auth-table-td {
+    .btn-action span {
+        line-height: 1;
+    }
+
+/* Кнопка редактирования */
+.btn-edit {
+    background-color: #eab308;
+}
+
+    .btn-edit:hover {
+        background-color: #ca8a04;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(234, 179, 8, 0.3);
+        color: white;
+    }
+
+/* Кнопка смены пароля */
+.btn-password {
+    background-color: #6b7280;
+}
+
+    .btn-password:hover {
+        background-color: #4b5563;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+        color: white;
+    }
+
+/* Кнопка удаления */
+.btn-delete {
+    background-color: #ef4444;
+}
+
+    .btn-delete:hover {
+        background-color: #dc2626;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        color: white;
+    }
+
+/* Футер таблицы */
+.table-footer {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 16px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.table-info {
+    color: #495057;
+    font-size: 0.95rem;
+    padding: 5px 20px;
+    background: white;
+    border-radius: 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+    .table-info strong {
+        color: black;
+        margin-left: 5px;
+        font-weight: 700;
+    }
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .auth-wrapper {
+        padding: 10px;
+    }
+
+    .auth-header {
+        padding: 15px 20px;
+    }
+
+    .auth-title {
+        font-size: 1.4rem;
+    }
+
+    .auth-body {
+        padding: 20px;
+    }
+
+    .toolbar {
+        justify-content: center;
+    }
+
+    .btn-create {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .cell-actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .btn-action {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .user-table th,
+    .user-table td {
+        padding: 12px 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .user-table {
+        font-size: 0.85rem;
+    }
+
+        .user-table th,
+        .user-table td {
+            padding: 10px;
+        }
+
+    .btn-action span {
+        font-size: 0.8rem;
+    }
+}
+
+/* Темная тема */
+@media (prefers-color-scheme: dark) {
+    .auth-card {
+        background: #2d2d2d;
+    }
+
+    .user-table {
+        background: #2d2d2d;
+    }
+
+        .user-table thead {
+            background-color: #363636;
+            border-bottom-color: #404040;
+        }
+
+        .user-table th {
+            color: #e0e0e0;
+        }
+
+        .user-table tbody tr {
+            border-bottom-color: #404040;
+        }
+
+            .user-table tbody tr:hover {
+                background-color: #363636;
+            }
+
+        .user-table td {
+            color: #e0e0e0;
+        }
+
+    .cell-login {
         color: #e0e0e0;
     }
 
-    .auth-table-row {
-        border-bottom-color: #404040;
+    .cell-name {
+        color: #b0b0b0;
     }
 
-        .auth-table-row:hover {
-            background-color: #3d3d3d;
+    .role-badge {
+        background-color: #404040;
+        color: #e0e0e0;
+        border-color: #4a4a4a;
+    }
+
+    .empty-state {
+        background-color: #363636;
+    }
+
+        .empty-state h5 {
+            color: #e0e0e0;
         }
+
+        .empty-state p {
+            color: #b0b0b0;
+        }
+
+    .table-footer {
+        background-color: #363636;
+    }
+
+    .table-info {
+        background: #2d2d2d;
+        color: #e0e0e0;
+    }
 }

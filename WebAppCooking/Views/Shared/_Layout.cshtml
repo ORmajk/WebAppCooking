@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="utf-8" />
@@ -7,6 +6,13 @@
     <title>@ViewData["Title"] - AppCooking</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/StyleMenu.css" />
+
+    <!-- Добавьте эту строку для рендеринга секции Styles -->
+    @RenderSection("Styles", required: false)
+
+    <link rel="icon" type="image/x-icon" href="~/iconfinder-spatula-home-kitchen-cook-chef-labor-4622495_122428.ico" />
+    <link rel="shortcut icon" href="~/iconfinder-spatula-home-kitchen-cook-chef-labor-4622495_122428.ico" />
+
 </head>
 <body>
     <header>
@@ -20,33 +26,44 @@
                     : "Home";
                 }
 
-                <a class="navbar-brand" asp-area="" asp-controller="@recipesController" asp-action="Index">
+                <a class="navbar-brand">
                     Калмыцкая кухня
                 </a>
 
-                <!-- В меню навигации -->
-                @if (isAuthenticated)
-                {
-                    <li class="nav-item">
-                        @if (userRole == "admin")
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row">
+                    <ul class="navbar-nav flex-row">
+                        @if (isAuthenticated)
                         {
-                            <a class="nav-link text-dark" asp-controller="RecipeAdmin" asp-action="Index">
-                                Управление рецептами
-                            </a>
-                            <a class="nav-link text-dark" asp-controller="Users" asp-action="Index">
-                                Управление пользователями
-                            </a>
+                            @if (userRole == "Admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="RecipeAdmin" asp-action="Index">
+                                        Управление рецептами
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Users" asp-action="Index">
+                                        Управление пользователями
+                                    </a>
+                                </li>
+                            }
+
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="RecipeUser" asp-action="Index">
+                                        Рецепты
+                                    </a>
+                                </li>
+                            }
                         }
-                        else
-                        {
-                            <a class="nav-link text-dark" asp-controller="RecipeUser" asp-action="Index">
-                                Рецепты
-                            </a>
-                        }
-                    </li>
-                }
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
-                    <ul class="navbar-nav">
+                    </ul>
+
+                    <ul class="navbar-nav flex-row ms-auto">
                         @if (!string.IsNullOrEmpty(Context.Session.GetString("UserId")))
                         {
                             <li class="nav-item">
@@ -83,6 +100,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    
 
     @if (IsSectionDefined("Scripts"))
     {

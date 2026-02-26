@@ -31,14 +31,14 @@ public class AccountController : Controller
                     .FirstOrDefault(u => u.Login.ToLower() == model.Login.ToLower());
 
                 // Проверяем, существует ли пользователь и совпадает ли пароль
-                if (user != null && user.Password == model.Password) // ВАЖНО: проверяем пароль!
+                if (user != null && user.Password == model.Password) 
                 {
                     HttpContext.Session.SetString("UserId", user.IdUser.ToString());
                     HttpContext.Session.SetString("UserLogin", user.Login);
                     HttpContext.Session.SetString("UserName", user.Name ?? "");
                     HttpContext.Session.SetString("UserRole", user.Role?.RoleName ?? "");
 
-                    if (user.Role?.RoleName == "admin")
+                    if (user.Role?.RoleName == "Admin")
                     {
                         return RedirectToAction("Index", "RecipeAdmin");
                     }

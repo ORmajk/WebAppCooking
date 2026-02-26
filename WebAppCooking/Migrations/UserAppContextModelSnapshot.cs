@@ -50,7 +50,7 @@ namespace WebAppCooking.Migrations
 
                     b.HasKey("IdAuthor");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Authors", (string)null);
                 });
 
             modelBuilder.Entity("WebAppCooking.Models.Ingredient", b =>
@@ -79,7 +79,7 @@ namespace WebAppCooking.Migrations
 
                     b.HasKey("IdIngredient");
 
-                    b.ToTable("Ingredients");
+                    b.ToTable("Ingredients", (string)null);
                 });
 
             modelBuilder.Entity("WebAppCooking.Models.Recipe", b =>
@@ -119,7 +119,7 @@ namespace WebAppCooking.Migrations
 
                     b.HasIndex("IdRecipeType");
 
-                    b.ToTable("Recipes");
+                    b.ToTable("Recipes", (string)null);
                 });
 
             modelBuilder.Entity("WebAppCooking.Models.RecipeIngredient", b =>
@@ -147,7 +147,7 @@ namespace WebAppCooking.Migrations
 
                     b.HasIndex("IdRecipe");
 
-                    b.ToTable("RecipeIngredients");
+                    b.ToTable("RecipeIngredients", (string)null);
                 });
 
             modelBuilder.Entity("WebAppCooking.Models.RecipeType", b =>
@@ -165,7 +165,7 @@ namespace WebAppCooking.Migrations
 
                     b.HasKey("IdRecipeType");
 
-                    b.ToTable("RecipeTypes");
+                    b.ToTable("RecipeTypes", (string)null);
                 });
 
             modelBuilder.Entity("WebAppCooking.Models.Role", b =>
@@ -183,7 +183,7 @@ namespace WebAppCooking.Migrations
 
                     b.HasKey("IdRole");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("WebAppCooking.Models.User", b =>
@@ -219,7 +219,7 @@ namespace WebAppCooking.Migrations
 
                     b.HasIndex("IdRole");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("WebAppCooking.Models.Recipe", b =>

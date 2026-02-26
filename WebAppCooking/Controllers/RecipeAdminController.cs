@@ -2,85 +2,152 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using WebAppCooking.Data;
 using WebAppCooking.Models;
 
-namespace WebAppCooking.Controllers
+public class RecipeAdminController : Controller
 {
-    public class RecipeAdminController : Controller
+    private readonly UserAppContext _context;
+
+    public RecipeAdminController(UserAppContext context)
     {
-        private readonly UserAppContext _context;
-
-        public RecipeAdminController(UserAppContext context)
+        _context = context;
+    }
+    public IActionResult Index()
+    {
+        try
         {
-            _context = context;
-        }
-
-        // GET: RecipeAdmin
-        public IActionResult Index()
-        {
-            // Проверяем, авторизован ли пользователь и имеет ли роль Admin
-            var userRole = HttpContext.Session.GetString("UserRole");
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")) || userRole != "Admin")
+            // Проверка авторизации
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
             {
                 return RedirectToAction("Login", "Account");
             }
 
+            // Проверка роли
+            var userRole = HttpContext.Session.GetString("UserRole");
+            if (userRole != "Admin")
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Получение данных с включением связанных сущностей
             var recipes = _context.Recipes
                 .Include(r => r.RecipeType)
                 .Include(r => r.Author)
-                .Include(r => r.RecipeIngredients)
-                    .ThenInclude(ri => ri.Ingredients)
                 .ToList();
 
-            return View(recipes);
+            // Важно: даже если нет рецептов, возвращаем пустой список, не null
+            return View(recipes ?? new List<Recipe>());
         }
-
-        // GET: RecipeAdmin/Details/5
-        public IActionResult Details(int? id)
+        catch (Exception ex)
         {
-            if (id == null)
+            // Логируем ошибку
+            Console.WriteLine($"Ошибка в RecipeAdmin.Index: {ex.Message}");
+            return View(new List<Recipe>()); // Возвращаем пустой список при ошибке
+        }
+    }
+    // GET: RecipeAdmin/Create
+    public IActionResult Create()
+    {
+        ViewData["RecipeTypeId"] = new SelectList(_context.RecipeTypes, "IdRecipeType", "RecipeTypeName");
+        ViewData["AuthorId"] = new SelectList(_context.Authors, "IdAuthor", "AuthorName");
+        ViewData["Ingredients"] = new MultiSelectList(_context.Ingredients, "IdIngredient", "IngredientName");
+        return View();
+    }
+
+    // POST: RecipeAdmin/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Create(Recipe recipe, int[] selectedIngredients)
+    {
+        // Удаляем навигационные свойства из ModelState
+        ModelState.Remove("RecipeType");
+        ModelState.Remove("Author");
+        ModelState.Remove("RecipeIngredients");
+
+        if (ModelState.IsValid)
+        {
+            _context.Add(recipe);
+            _context.SaveChanges();
+
+            // Добавляем ингредиенты
+            if (selectedIngredients != null && selectedIngredients.Any())
             {
-                return NotFound();
+                foreach (var ingredientId in selectedIngredients)
+                {
+                    _context.RecipeIngredients.Add(new RecipeIngredient
+                    {
+                        IdRecipe = recipe.IdRecipe,
+                        IdIngredient = ingredientId
+                    });
+                }
+                _context.SaveChanges();
             }
 
-            var recipe = _context.Recipes
-                .Include(r => r.RecipeType)
-                .Include(r => r.Author)
-                .Include(r => r.RecipeIngredients)
-                    .ThenInclude(ri => ri.Ingredients)
-                .FirstOrDefault(m => m.IdRecipe == id);
-
-            if (recipe == null)
-            {
-                return NotFound();
-            }
-
-            return View(recipe);
+            TempData["SuccessMessage"] = "Рецепт успешно добавлен";
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: RecipeAdmin/Create
-        public IActionResult Create()
+        ViewData["RecipeTypeId"] = new SelectList(_context.RecipeTypes, "IdRecipeType", "RecipeTypeName", recipe.IdRecipeType);
+        ViewData["AuthorId"] = new SelectList(_context.Authors, "IdAuthor", "AuthorName", recipe.IdAuthor);
+        ViewData["Ingredients"] = new MultiSelectList(_context.Ingredients, "IdIngredient", "IngredientName", selectedIngredients);
+        return View(recipe);
+    }
+
+    // GET: RecipeAdmin/Edit/5
+    public IActionResult Edit(int? id)
+    {
+        if (id == null)
         {
-            ViewData["IdRecipeType"] = new SelectList(_context.RecipeTypes.ToList(), "IdRecipeType", "TypeName");
-            ViewData["IdAuthor"] = new SelectList(_context.Authors.ToList(), "IdAuthor", "AuthorName");
-            ViewData["Ingredients"] = new MultiSelectList(_context.Ingredients.ToList(), "IdIngredient", "IngredientName");
-            return View();
+            return NotFound();
         }
 
-        // POST: RecipeAdmin/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("IdRecipe,RecipeName,RecipeDescription,RecipeImage,RecipeDate,IdRecipeType,IdAuthor")] Recipe recipe, int[] selectedIngredients)
+        var recipe = _context.Recipes
+            .Include(r => r.RecipeIngredients)
+            .FirstOrDefault(r => r.IdRecipe == id);
+
+        if (recipe == null)
         {
-            if (ModelState.IsValid)
+            return NotFound();
+        }
+
+        ViewData["RecipeTypeId"] = new SelectList(_context.RecipeTypes, "IdRecipeType", "RecipeTypeName", recipe.IdRecipeType);
+        ViewData["AuthorId"] = new SelectList(_context.Authors, "IdAuthor", "AuthorName", recipe.IdAuthor);
+
+        var selectedIngredients = recipe.RecipeIngredients?.Select(ri => ri.IdIngredient).ToArray();
+        ViewData["Ingredients"] = new MultiSelectList(_context.Ingredients, "IdIngredient", "IngredientName", selectedIngredients);
+
+        return View(recipe);
+    }
+
+    // POST: RecipeAdmin/Edit/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Edit(int id, Recipe recipe, int[] selectedIngredients)
+    {
+        if (id != recipe.IdRecipe)
+        {
+            return NotFound();
+        }
+
+        // Удаляем навигационные свойства из ModelState
+        ModelState.Remove("RecipeType");
+        ModelState.Remove("Author");
+        ModelState.Remove("RecipeIngredients");
+
+        if (ModelState.IsValid)
+        {
+            try
             {
-                _context.Add(recipe);
+                _context.Update(recipe);
                 _context.SaveChanges();
 
-                // Добавляем ингредиенты
-                if (selectedIngredients != null)
+                // Обновляем ингредиенты
+                var existingIngredients = _context.RecipeIngredients.Where(ri => ri.IdRecipe == id).ToList();
+                _context.RecipeIngredients.RemoveRange(existingIngredients);
+
+                if (selectedIngredients != null && selectedIngredients.Any())
                 {
                     foreach (var ingredientId in selectedIngredients)
                     {
@@ -90,145 +157,77 @@ namespace WebAppCooking.Controllers
                             IdIngredient = ingredientId
                         });
                     }
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
 
-                return RedirectToAction(nameof(Index));
+                TempData["SuccessMessage"] = "Рецепт успешно обновлен";
             }
-
-            ViewData["IdRecipeType"] = new SelectList(_context.RecipeTypes.ToList(), "IdRecipeType", "TypeName", recipe.IdRecipeType);
-            ViewData["IdAuthor"] = new SelectList(_context.Authors.ToList(), "IdAuthor", "AuthorName", recipe.IdAuthor);
-            ViewData["Ingredients"] = new MultiSelectList(_context.Ingredients.ToList(), "IdIngredient", "IngredientName", selectedIngredients);
-
-            return View(recipe);
-        }
-
-        // GET: RecipeAdmin/Edit/5
-        public IActionResult Edit(int? id)
-        {
-            if (id == null)
+            catch (DbUpdateConcurrencyException)
             {
-                return NotFound();
-            }
-
-            var recipe = _context.Recipes
-                .Include(r => r.RecipeIngredients)
-                .FirstOrDefault(r => r.IdRecipe == id);
-
-            if (recipe == null)
-            {
-                return NotFound();
-            }
-
-            ViewData["IdRecipeType"] = new SelectList(_context.RecipeTypes.ToList(), "IdRecipeType", "TypeName", recipe.IdRecipeType);
-            ViewData["IdAuthor"] = new SelectList(_context.Authors.ToList(), "IdAuthor", "AuthorName", recipe.IdAuthor);
-
-            var selectedIngredients = recipe.RecipeIngredients?.Select(ri => ri.IdIngredient).ToArray();
-            ViewData["Ingredients"] = new MultiSelectList(_context.Ingredients.ToList(), "IdIngredient", "IngredientName", selectedIngredients);
-
-            return View(recipe);
-        }
-
-        // POST: RecipeAdmin/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("IdRecipe,RecipeName,RecipeDescription,RecipeImage,RecipeDate,IdRecipeType,IdAuthor")] Recipe recipe, int[] selectedIngredients)
-        {
-            if (id != recipe.IdRecipe)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                if (!RecipeExists(recipe.IdRecipe))
                 {
-                    _context.Update(recipe);
-                    _context.SaveChanges();
-
-                    // Обновляем ингредиенты
-                    var existingIngredients = _context.RecipeIngredients.Where(ri => ri.IdRecipe == id).ToList();
-                    _context.RecipeIngredients.RemoveRange(existingIngredients);
-
-                    if (selectedIngredients != null)
-                    {
-                        foreach (var ingredientId in selectedIngredients)
-                        {
-                            _context.RecipeIngredients.Add(new RecipeIngredient
-                            {
-                                IdRecipe = recipe.IdRecipe,
-                                IdIngredient = ingredientId
-                            });
-                        }
-                    }
-                    _context.SaveChanges();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!RecipeExists(recipe.IdRecipe))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
             }
-
-            ViewData["IdRecipeType"] = new SelectList(_context.RecipeTypes.ToList(), "IdRecipeType", "TypeName", recipe.IdRecipeType);
-            ViewData["IdAuthor"] = new SelectList(_context.Authors.ToList(), "IdAuthor", "AuthorName", recipe.IdAuthor);
-            ViewData["Ingredients"] = new MultiSelectList(_context.Ingredients.ToList(), "IdIngredient", "IngredientName", selectedIngredients);
-
-            return View(recipe);
-        }
-
-        // GET: RecipeAdmin/Delete/5
-        public IActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var recipe = _context.Recipes
-                .Include(r => r.RecipeType)
-                .Include(r => r.Author)
-                .FirstOrDefault(m => m.IdRecipe == id);
-
-            if (recipe == null)
-            {
-                return NotFound();
-            }
-
-            return View(recipe);
-        }
-
-        // POST: RecipeAdmin/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var recipe = _context.Recipes
-                .Include(r => r.RecipeIngredients)
-                .FirstOrDefault(r => r.IdRecipe == id);
-
-            if (recipe != null)
-            {
-                // Сначала удаляем связанные ингредиенты
-                _context.RecipeIngredients.RemoveRange(recipe.RecipeIngredients);
-                // Затем удаляем рецепт
-                _context.Recipes.Remove(recipe);
-            }
-
-            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RecipeExists(int id)
+        ViewData["RecipeTypeId"] = new SelectList(_context.RecipeTypes, "IdRecipeType", "RecipeTypeName", recipe.IdRecipeType);
+        ViewData["AuthorId"] = new SelectList(_context.Authors, "IdAuthor", "AuthorName", recipe.IdAuthor);
+        ViewData["Ingredients"] = new MultiSelectList(_context.Ingredients, "IdIngredient", "IngredientName", selectedIngredients);
+        return View(recipe);
+    }
+
+    // GET: RecipeAdmin/Delete/5
+    public IActionResult Delete(int? id)
+    {
+        if (id == null)
         {
-            return _context.Recipes.Any(e => e.IdRecipe == id);
+            return NotFound();
         }
+
+        var recipe = _context.Recipes
+            .Include(r => r.RecipeType)
+            .Include(r => r.Author)
+            .FirstOrDefault(m => m.IdRecipe == id);
+
+        if (recipe == null)
+        {
+            return NotFound();
+        }
+
+        return View(recipe);
+    }
+
+    // POST: RecipeAdmin/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public IActionResult DeleteConfirmed(int id)
+    {
+        var recipe = _context.Recipes
+            .Include(r => r.RecipeIngredients)
+            .FirstOrDefault(r => r.IdRecipe == id);
+
+        if (recipe != null)
+        {
+            // Сначала удаляем связанные ингредиенты
+            _context.RecipeIngredients.RemoveRange(recipe.RecipeIngredients);
+            // Затем удаляем рецепт
+            _context.Recipes.Remove(recipe);
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Рецепт успешно удален";
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    private bool RecipeExists(int id)
+    {
+        return _context.Recipes.Any(e => e.IdRecipe == id);
     }
 }

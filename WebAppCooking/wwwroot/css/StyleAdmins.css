@@ -1,4 +1,16 @@
-﻿/* Admin Toolbar */
+﻿html, body {
+    height: 100%;
+    background-color: #FFAA00;
+}
+
+.admin-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0;
+    color: white;
+}
+
+/* Панель инструментов */
 .admin-toolbar {
     margin-bottom: 25px;
     display: flex;
@@ -6,10 +18,8 @@
 }
 
 .admin-btn-create {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    display: inline-block;
+    background: #FF9639;
     color: white;
     padding: 12px 24px;
     border-radius: 8px;
@@ -24,38 +34,62 @@
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
         color: white;
-        background: linear-gradient(135deg, #218838 0%, #1ba87e 100%);
-    }
-
-    .admin-btn-create i {
-        font-size: 1.2rem;
+        background: #FF9640;
     }
 
 /* Пустое состояние */
 .admin-empty-state {
     text-align: center;
     padding: 60px 20px;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    background: #FF9639;
     border-radius: 12px;
     margin: 20px 0;
 }
 
-    .admin-empty-state i {
-        font-size: 4rem;
-        color: #adb5bd;
-        margin-bottom: 15px;
+.empty-state-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: #FF9639;
+    border-radius: 50%;
+    position: relative;
+}
+
+    .empty-state-icon::before,
+    .empty-state-icon::after {
+        content: '';
+        position: absolute;
+        background: #adb5bd;
     }
 
-    .admin-empty-state h5 {
-        color: #495057;
-        font-size: 1.25rem;
-        margin-bottom: 10px;
+    .empty-state-icon::before {
+        width: 40px;
+        height: 6px;
+        top: 50%;
+        left: 20px;
+        transform: translateY(-50%);
     }
 
-    .admin-empty-state p {
-        color: #6c757d;
-        margin-bottom: 0;
+    .empty-state-icon::after {
+        width: 6px;
+        height: 40px;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
     }
+
+.empty-state-title {
+    color: #495057;
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.empty-state-text {
+    color: #6c757d;
+    margin-bottom: 0;
+    font-size: 1rem;
+}
 
 /* Контейнер таблицы */
 .admin-table-container {
@@ -74,16 +108,16 @@
 }
 
 .admin-table-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #FF9639;
     color: white;
 }
 
-    .admin-table-header th {
-        padding: 15px 20px;
-        font-weight: 600;
-        text-align: left;
-        white-space: nowrap;
-    }
+.admin-table-th {
+    padding: 15px 20px;
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+}
 
 .admin-table-body {
     background: white;
@@ -129,28 +163,25 @@
 
 /* Бейдж типа */
 .recipe-type-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
+    display: inline-block;
     padding: 5px 12px;
-    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-    color: #0369a1;
+    background: #FF9639;
+    color: white;
     border-radius: 20px;
     font-size: 0.85rem;
     font-weight: 500;
 }
 
     .recipe-type-badge.empty {
-        background: #f1f5f9;
+        background: #FF9640;
         color: #64748b;
     }
 
 /* Автор */
 .recipe-author {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
+    display: inline-block;
     color: #475569;
+    font-size: 0.95rem;
 }
 
     .recipe-author.empty {
@@ -160,14 +191,12 @@
 
 /* Дата */
 .recipe-date {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
+    display: inline-block;
     color: #64748b;
     font-size: 0.9rem;
 }
 
-/* Кнопки действий - обновленные цвета */
+/* Кнопки действий */
 .admin-actions {
     display: flex;
     gap: 8px;
@@ -175,65 +204,46 @@
 }
 
 .admin-action-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 16px;
-    border-radius: 8px;
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 6px;
     text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
     transition: all 0.2s ease;
     color: white;
-    font-size: 0.9rem;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    min-width: 100px;
 }
 
-/* Кнопка просмотра - желтый (#eab308) */
 .admin-action-view {
-    background-color: #eab308;
+    background: #FF9639;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.admin-action-edit {
+    background: #FF9639;
     box-shadow: 0 2px 8px rgba(234, 179, 8, 0.3);
 }
 
-    .admin-action-view:hover {
-        background-color: #ca8a04;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(234, 179, 8, 0.4);
-        color: white;
-    }
-
-/* Кнопка редактирования - серый (#6b7280) */
-.admin-action-edit {
-    background-color: #6b7280;
-    box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
-}
-
-    .admin-action-edit:hover {
-        background-color: #4b5563;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(107, 114, 128, 0.4);
-        color: white;
-    }
-
-/* Кнопка удаления - красный (#ef4444) */
 .admin-action-delete {
-    background-color: #ef4444;
+    background: #FF9639;
     box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
 }
 
-    .admin-action-delete:hover {
-        background-color: #dc2626;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-        color: white;
-    }
+.admin-action-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    color: white;
+}
+
+.admin-action-btn:active {
+    transform: translateY(0);
+}
 
 /* Футер таблицы */
 .admin-table-footer {
     margin-top: 20px;
     padding: 15px;
-    background: white;
+    background: #FF9639;
     border-radius: 8px;
     display: flex;
     justify-content: flex-end;
@@ -248,9 +258,11 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-    .table-info strong {
-        color: white;
-    }
+.table-info-count {
+    color: #667eea;
+    font-weight: 700;
+    margin-left: 5px;
+}
 
 /* Адаптивность */
 @media (max-width: 768px) {
@@ -260,7 +272,7 @@
 
     .admin-btn-create {
         width: 100%;
-        justify-content: center;
+        text-align: center;
     }
 
     .admin-table-cell {
@@ -284,14 +296,13 @@
     }
 
     .admin-action-btn {
-        width: 100%;
-        min-width: auto;
+        text-align: center;
     }
 }
 
 @media (max-width: 576px) {
-    .admin-table th,
-    .admin-table td {
+    .admin-table-th,
+    .admin-table-cell {
         padding: 10px;
     }
 
@@ -326,17 +337,13 @@
         background: #363636;
     }
 
-        .admin-empty-state i {
-            color: #666;
-        }
+    .empty-state-title {
+        color: #e0e0e0;
+    }
 
-        .admin-empty-state h5 {
-            color: #e0e0e0;
-        }
-
-        .admin-empty-state p {
-            color: #b0b0b0;
-        }
+    .empty-state-text {
+        color: #b0b0b0;
+    }
 
     .admin-table-footer {
         background: #363636;
