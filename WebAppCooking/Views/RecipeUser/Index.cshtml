@@ -1,0 +1,194 @@
+﻿@model IEnumerable<WebAppCooking.Models.Recipe>
+
+@{
+    ViewData["Title"] = "Рецепты калмыцкой кухни";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/StyleRecipeUser.css" />
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-container" style="max-width: 1200px;">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h4 class="auth-title" style="color: white">Рецепты калмыцкой кухни</h4>
+                </div>
+                <div class="auth-body">
+                    <!-- Панель фильтрации и поиска -->
+                    <div class="filter-panel">
+                        <form asp-action="Index" method="get" class="filter-form">
+                            <!-- Поиск -->
+                            <div class="search-box">
+                                <input type="text"
+                                       name="searchString"
+                                       value="@ViewData["CurrentSearch"]"
+                                       placeholder="Поиск рецептов..."
+                                       class="search-input" />
+                                <button type="submit" class="search-btn">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+
+                            <!-- Фильтр по типу -->
+                            <div class="filter-group">
+                                <select name="recipeTypeId" class="filter-select" onchange="this.form.submit()">
+                                    <option value="">Все типы</option>
+                                    @foreach (var type in ViewBag.RecipeTypes)
+                                    {
+                                        <option value="@type.IdRecipeType"
+                                                selected="@(ViewData["CurrentType"]?.ToString() == type.IdRecipeType.ToString() ? "selected" : null)">
+                                            @type.RecipeTypeName
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+
+                            <!-- Фильтр по дате -->
+                            <div class="filter-group">
+                                <select name="dateFilter" class="filter-select" onchange="this.form.submit()">
+                                    <option value="">Все даты</option>
+                                    <option value="today" selected="@(ViewData["CurrentDateFilter"]?.ToString() == "today" ? "selected" : null)">Сегодня</option>
+                                    <option value="week" selected="@(ViewData["CurrentDateFilter"]?.ToString() == "week" ? "selected" : null)">За неделю</option>
+                                    <option value="month" selected="@(ViewData["CurrentDateFilter"]?.ToString() == "month" ? "selected" : null)">За месяц</option>
+                                    <option value="year" selected="@(ViewData["CurrentDateFilter"]?.ToString() == "year" ? "selected" : null)">За год</option>
+                                </select>
+                            </div>
+
+                            <!-- Кнопка сброса -->
+                            <a asp-action="Index" class="reset-btn">
+                                <i class="bi bi-x-circle"></i> Сбросить
+                            </a>
+                        </form>
+                    </div>
+
+                    <!-- Панель сортировки -->
+                    <div class="sort-panel">
+                        <span class="sort-label">Сортировать по:</span>
+                        <a asp-action="Index"
+                           asp-route-searchString="@ViewData["CurrentSearch"]"
+                           asp-route-recipeTypeId="@ViewData["CurrentType"]"
+                           asp-route-dateFilter="@ViewData["CurrentDateFilter"]"
+                           asp-route-sortOrder="@ViewData["NameSortParam"]"
+                           class="sort-btn @(string.IsNullOrEmpty(ViewData["CurrentSort"]?.ToString()) ? "active" : "")">
+                            Названию
+                            @if (string.IsNullOrEmpty(ViewData["CurrentSort"]?.ToString()))
+                            {
+                                <i class="bi bi-arrow-up"></i>
+                            }
+                            else if (ViewData["CurrentSort"]?.ToString() == "name_desc")
+                            {
+                                <i class="bi bi-arrow-down"></i>
+                            }
+                        </a>
+
+                        <a asp-action="Index"
+                           asp-route-searchString="@ViewData["CurrentSearch"]"
+                           asp-route-recipeTypeId="@ViewData["CurrentType"]"
+                           asp-route-dateFilter="@ViewData["CurrentDateFilter"]"
+                           asp-route-sortOrder="@ViewData["DateSortParam"]"
+                           class="sort-btn @(ViewData["CurrentSort"]?.ToString() == "date" || ViewData["CurrentSort"]?.ToString() == "date_desc" ? "active" : "")">
+                            Дате
+                            @if (ViewData["CurrentSort"]?.ToString() == "date")
+                            {
+                                <i class="bi bi-arrow-up"></i>
+                            }
+                            else if (ViewData["CurrentSort"]?.ToString() == "date_desc")
+                            {
+                                <i class="bi bi-arrow-down"></i>
+                            }
+                        </a>
+
+                        <a asp-action="Index"
+                           asp-route-searchString="@ViewData["CurrentSearch"]"
+                           asp-route-recipeTypeId="@ViewData["CurrentType"]"
+                           asp-route-dateFilter="@ViewData["CurrentDateFilter"]"
+                           asp-route-sortOrder="@ViewData["TypeSortParam"]"
+                           class="sort-btn @(ViewData["CurrentSort"]?.ToString() == "type" || ViewData["CurrentSort"]?.ToString() == "type_desc" ? "active" : "")">
+                            Типу
+                            @if (ViewData["CurrentSort"]?.ToString() == "type")
+                            {
+                                <i class="bi bi-arrow-up"></i>
+                            }
+                            else if (ViewData["CurrentSort"]?.ToString() == "type_desc")
+                            {
+                                <i class="bi bi-arrow-down"></i>
+                            }
+                        </a>
+                    </div>
+
+                    <!-- Результаты -->
+                    @if (!Model.Any())
+                    {
+                        <div class="auth-empty-state">
+                            <i class="bi bi-emoji-frown" style="font-size: 3rem; color: #6c757d;"></i>
+                            <p class="auth-empty-text">Рецепты не найдены</p>
+                            <p style="color: #6c757d; margin-top: 10px;">Попробуйте изменить параметры поиска</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="results-info">
+                            <i class="bi bi-info-circle"></i>
+                            Найдено рецептов: <strong>@Model.Count()</strong>
+                        </div>
+
+                        <div class="recipes-grid">
+                            @foreach (var item in Model)
+                            {
+                                <div class="recipe-card">
+                                    <div class="recipe-image-wrapper">
+                                        <img src="images/@item.RecipeImage" alt="@item.RecipeName" class="recipe-image"
+                                             onerror="this.onerror=null; this.src='images/no-image.jpg';">
+                                    </div>
+                                    <div class="recipe-content">
+                                        <h5 class="recipe-title">@item.RecipeName</h5>
+                                        <p class="recipe-description">@item.RecipeDescription</p>
+
+                                        <div class="recipe-meta">
+                                            @if (item.RecipeType != null)
+                                            {
+                                                <span class="recipe-category-badge">
+                                                    <i class="bi bi-tag"></i>
+                                                    @item.RecipeType?.RecipeTypeName
+                                                </span>
+                                            }
+                                            <span class="recipe-date-badge">
+                                                <i class="bi bi-calendar"></i>
+                                                @item.RecipeDate?.ToString("dd.MM.yyyy")
+                                            </span>
+                                        </div>
+
+                                        @if (item.Author != null)
+                                        {
+                                            <div class="recipe-author-info">
+                                                <i class="bi bi-person"></i>
+                                                <span class="recipe-author-label">Автор:</span>
+                                                <span class="recipe-author-name">@item.Author.AuthorName</span>
+                                            </div>
+                                        }
+
+                                        <div class="recipe-actions">
+                                            <div class="recipe-actions">
+                                                <a asp-controller="RecipeUser" asp-action="Details" asp-route-id="@item.IdRecipe" class="auth-btn-login recipe-details-btn" style="color: white">
+                                                    Подробнее
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+}

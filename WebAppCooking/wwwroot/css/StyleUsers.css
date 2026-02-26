@@ -1,0 +1,68 @@
+﻿.auth-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.auth-table-header {
+    background-color: var(--primary-color, #0d6efd);
+    color: white;
+}
+
+.auth-table-th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.auth-table-body {
+    background-color: white;
+}
+
+.auth-table-row {
+    border-bottom: 1px solid #e0e0e0;
+    transition: background-color 0.2s;
+}
+
+    .auth-table-row:hover {
+        background-color: #f8f9fa;
+    }
+
+.auth-table-td {
+    padding: 12px 15px;
+    color: #333;
+}
+
+.auth-role-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: #e7f3ff;
+    color: var(--primary-color, #0d6efd);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.auth-role-badge-empty {
+    background-color: #f0f0f0;
+    color: #999;
+}
+
+/* Темная тема (если нужна) */
+@media (prefers-color-scheme: dark) {
+    .auth-table-body {
+        background-color: #2d2d2d;
+    }
+
+    .auth-table-td {
+        color: #e0e0e0;
+    }
+
+    .auth-table-row {
+        border-bottom-color: #404040;
+    }
+
+        .auth-table-row:hover {
+            background-color: #3d3d3d;
+        }
+}

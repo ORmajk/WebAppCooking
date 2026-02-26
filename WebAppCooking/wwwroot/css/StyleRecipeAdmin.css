@@ -1,0 +1,337 @@
+﻿/* Admin Toolbar */
+.admin-toolbar {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.admin-btn-create {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+    .admin-btn-create:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        color: white;
+        background: linear-gradient(135deg, #218838 0%, #1ba87e 100%);
+    }
+
+    .admin-btn-create i {
+        font-size: 1.2rem;
+    }
+
+/* Пустое состояние */
+.admin-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+    .admin-empty-state i {
+        font-size: 4rem;
+        color: #adb5bd;
+        margin-bottom: 15px;
+    }
+
+    .admin-empty-state h5 {
+        color: #495057;
+        font-size: 1.25rem;
+        margin-bottom: 10px;
+    }
+
+    .admin-empty-state p {
+        color: #6c757d;
+        margin-bottom: 0;
+    }
+
+/* Контейнер таблицы */
+.admin-table-container {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+}
+
+/* Таблица */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    font-size: 0.95rem;
+}
+
+.admin-table-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+    .admin-table-header th {
+        padding: 15px 20px;
+        font-weight: 600;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+.admin-table-body {
+    background: white;
+}
+
+.admin-table-row {
+    border-bottom: 1px solid #e9ecef;
+    transition: background-color 0.2s ease;
+}
+
+    .admin-table-row:hover {
+        background-color: #f8f9fa;
+    }
+
+    .admin-table-row:last-child {
+        border-bottom: none;
+    }
+
+.admin-table-cell {
+    padding: 15px 20px;
+    vertical-align: middle;
+}
+
+/* Информация о рецепте */
+.recipe-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.recipe-thumbnail {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-name {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+/* Бейдж типа */
+.recipe-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+    color: #0369a1;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+    .recipe-type-badge.empty {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+/* Автор */
+.recipe-author {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #475569;
+}
+
+    .recipe-author.empty {
+        color: #94a3b8;
+        font-style: italic;
+    }
+
+/* Дата */
+.recipe-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+/* Кнопки действий */
+.actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    color: white;
+    font-size: 1rem;
+}
+
+    .action-btn.view {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
+
+    .action-btn.edit {
+        background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+        box-shadow: 0 2px 8px rgba(234, 179, 8, 0.3);
+    }
+
+    .action-btn.delete {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+    }
+
+    .action-btn:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.1);
+        color: white;
+    }
+
+    .action-btn:active {
+        transform: translateY(0);
+    }
+
+/* Футер таблицы */
+.admin-table-footer {
+    margin-top: 20px;
+    padding: 15px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.table-info {
+    color: #495057;
+    font-size: 0.95rem;
+    padding: 5px 15px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+    .table-info strong {
+        color: #667eea;
+    }
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .admin-toolbar {
+        justify-content: center;
+    }
+
+    .admin-btn-create {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .admin-table-cell {
+        padding: 12px 15px;
+    }
+
+    .recipe-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .recipe-thumbnail {
+        width: 40px;
+        height: 40px;
+    }
+
+    .actions {
+        gap: 5px;
+    }
+
+    .action-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .admin-table th,
+    .admin-table td {
+        padding: 10px;
+    }
+
+    .recipe-thumbnail {
+        display: none;
+    }
+
+    .action-btn {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+/* Темная тема */
+@media (prefers-color-scheme: dark) {
+    .admin-table {
+        background: #2d2d2d;
+    }
+
+    .admin-table-body {
+        background: #2d2d2d;
+    }
+
+    .admin-table-row {
+        border-bottom-color: #404040;
+    }
+
+        .admin-table-row:hover {
+            background-color: #363636;
+        }
+
+    .recipe-name {
+        color: #e0e0e0;
+    }
+
+    .admin-empty-state {
+        background: #363636;
+    }
+
+        .admin-empty-state i {
+            color: #666;
+        }
+
+        .admin-empty-state h5 {
+            color: #e0e0e0;
+        }
+
+        .admin-empty-state p {
+            color: #b0b0b0;
+        }
+
+    .admin-table-footer {
+        background: #363636;
+    }
+
+    .table-info {
+        background: #2d2d2d;
+        color: #e0e0e0;
+    }
+}

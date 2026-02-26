@@ -1,0 +1,67 @@
+﻿@model WebAppCooking.Models.Recipe
+
+@{
+    ViewData["Title"] = Model.RecipeName;
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/StyleDetails.css" />
+</head>
+<body>
+<div class="auth-wrapper">
+    <div class="auth-container" style="max-width: 800px;">
+        <div class="auth-card">
+            <div class="auth-header">
+                    <h4 class="auth-title" style="color: white">@Model.RecipeName</h4>
+            </div>
+            <div class="auth-body">
+                @if (!string.IsNullOrEmpty(Model.RecipeImage))
+                {
+                    <div class="detail-image-wrapper">
+                        <img src="/images/@Model.RecipeImage" alt="@Model.RecipeName" class="detail-image">
+                    </div>
+                }
+
+                <div class="detail-section">
+                    <h5>Описание</h5>
+                    <p>@Model.RecipeDescription</p>
+                </div>
+
+                <div class="detail-section">
+                    <h5>Ингредиенты</h5>
+                    @if (Model.RecipeIngredients != null && Model.RecipeIngredients.Any())
+                    {
+                        <ul class="ingredients-list">
+                            @foreach (var item in Model.RecipeIngredients)
+                            {
+                                <li>@item.Ingredients?.IngredientName</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>Ингредиенты не указаны</p>
+                    }
+                </div>
+
+                <div class="detail-info">
+                    <p><strong>Тип блюда:</strong> @Model.RecipeType?.RecipeTypeName</p>
+                    <p><strong>Дата добавления:</strong> @Model.RecipeDate?.ToString("dd.MM.yyyy")</p>
+                    @if (Model.Author != null)
+                    {
+                        <p><strong>Автор:</strong> @Model.Author.AuthorName</p>
+                    }
+                </div>
+
+                <div class="detail-actions">
+                    <a asp-action="Index" class="auth-btn-register">Назад к списку</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

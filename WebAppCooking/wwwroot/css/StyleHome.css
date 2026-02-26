@@ -47,14 +47,14 @@ html, body {
 }
 
 .auth-header {
-    background-color: #f0f0f0;
+    background-color: #FF9640;
     padding: 20px;
     text-align: center;
     border-bottom: 1px solid #ddd;
 }
 
 .auth-title {
-    color: #333;
+    color: white;
     font-size: 20px;
     font-weight: normal;
     margin: 0;

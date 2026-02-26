@@ -21,26 +21,42 @@ public class AccountController : Controller
     [HttpPost]
     public IActionResult Login(LoginViewModel model)
     {
-        if (ModelState.IsValid)
+        try
         {
-            var user = _context.Users
-                .Include(u => u.Role)
-                .FirstOrDefault(u => u.Login == model.Login && u.Password == model.Password);
-
-            if (user != null)
+            if (ModelState.IsValid)
             {
-                // Простая аутентификация через сессию
-                HttpContext.Session.SetString("UserId", user.IdUser.ToString());
-                HttpContext.Session.SetString("UserLogin", user.Login);
-                HttpContext.Session.SetString("UserName", user.Name);
-                HttpContext.Session.SetString("UserRole", user.Role?.RoleName ?? "");
+                // Ищем пользователя по логину
+                var user = _context.Users
+                    .Include(u => u.Role)
+                    .FirstOrDefault(u => u.Login.ToLower() == model.Login.ToLower());
 
-                return RedirectToAction("Index", "Home");
+                // Проверяем, существует ли пользователь и совпадает ли пароль
+                if (user != null && user.Password == model.Password) // ВАЖНО: проверяем пароль!
+                {
+                    HttpContext.Session.SetString("UserId", user.IdUser.ToString());
+                    HttpContext.Session.SetString("UserLogin", user.Login);
+                    HttpContext.Session.SetString("UserName", user.Name ?? "");
+                    HttpContext.Session.SetString("UserRole", user.Role?.RoleName ?? "");
+
+                    if (user.Role?.RoleName == "admin")
+                    {
+                        return RedirectToAction("Index", "RecipeAdmin");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "RecipeUser");
+                    }
+                }
+
+                ModelState.AddModelError("", "Неверный логин или пароль");
             }
-
-            ModelState.AddModelError("", "Неверный логин или пароль");
         }
-        return View(model);
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", "Ошибка при входе: " + ex.Message);
+        }
+
+        return View();
     }
 
     [HttpGet]

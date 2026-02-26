@@ -27,7 +27,7 @@ namespace WebAppCooking.Models
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Введите возраст")]
-        [Range(1, 120, ErrorMessage = "Возраст должен быть от 1 до 120")]
+        [Range(18, 120, ErrorMessage = "Возраст должен быть от 18 до 120")]
         [Display(Name = "Возраст")]
         public int Age { get; set; }
     }

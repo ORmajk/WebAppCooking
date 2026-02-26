@@ -1,0 +1,76 @@
+﻿*{
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html, body {
+    height: 100%;
+    background-color: #FFAA00;
+}
+
+.detail-image-wrapper {
+    width: 80%;
+    max-height: 500px;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.detail-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detail-section {
+    margin-bottom: 30px;
+}
+
+    .detail-section h5 {
+        color: white;
+        border-bottom: 2px solid white;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+
+.ingredients-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+    .ingredients-list li {
+        background: #FF9640;
+        padding: 8px 12px;
+        border-radius: 6px;
+    }
+
+.detail-info {
+    background: #FF9640;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+}
+
+    .detail-info p {
+        margin-bottom: 10px;
+    }
+
+.detail-actions {
+
+    text-align: center;
+}
+
+.auth-btn-register {
+    background: #FF9640;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+}

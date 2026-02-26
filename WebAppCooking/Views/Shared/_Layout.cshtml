@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="utf-8" />
@@ -11,16 +12,45 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Калмыцкая кухня</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                @{
+                    var isAuthenticated = Context.Session.GetString("UserId") != null;
+                    var userRole = Context.Session.GetString("UserRole");
+                    var recipesController = isAuthenticated
+                    ? (userRole == "Admin" ? "RecipeAdmin" : "RecipeUser")
+                    : "Home";
+                }
+
+                <a class="navbar-brand" asp-area="" asp-controller="@recipesController" asp-action="Index">
+                    Калмыцкая кухня
+                </a>
+
+                <!-- В меню навигации -->
+                @if (isAuthenticated)
+                {
+                    <li class="nav-item">
+                        @if (userRole == "admin")
+                        {
+                            <a class="nav-link text-dark" asp-controller="RecipeAdmin" asp-action="Index">
+                                Управление рецептами
+                            </a>
+                            <a class="nav-link text-dark" asp-controller="Users" asp-action="Index">
+                                Управление пользователями
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="nav-link text-dark" asp-controller="RecipeUser" asp-action="Index">
+                                Рецепты
+                            </a>
+                        }
+                    </li>
+                }
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
                     <ul class="navbar-nav">
                         @if (!string.IsNullOrEmpty(Context.Session.GetString("UserId")))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Profile">
+                                <a class="nav-link text-dark">
                                     Здравствуйте, @Context.Session.GetString("UserName")
                                 </a>
                             </li>

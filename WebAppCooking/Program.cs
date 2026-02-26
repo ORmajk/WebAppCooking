@@ -3,11 +3,12 @@ using WebAppCooking.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Добавляем контекст базы данных
+// Добавляем сервисы
+builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<UserAppContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Добавляем сессии
+// НАСТРОЙКА СЕССИЙ - ЭТО ВАЖНО!
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -16,13 +17,24 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-builder.Services.AddControllersWithViews();
-
 var app = builder.Build();
 
+// Configure the HTTP request pipeline
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseSession(); // Важно: добавить UseSession
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+// ВАЖНО: UseSession ДОЛЖЕН быть здесь!
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
