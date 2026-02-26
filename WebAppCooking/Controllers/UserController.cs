@@ -46,25 +46,22 @@ namespace YourProjectName.Controllers
             return View(user);
         }
 
-        // GET: Users/Create
-        public IActionResult Create()
+        // GET: Users/CreateUser
+        public IActionResult CreateUser()
         {
-            // Получаем список ролей для выпадающего списка
             ViewBag.Roles = new SelectList(_context.Roles, "IdRole", "RoleName");
             return View();
         }
 
-        // POST: Users/Create
+        // POST: Users/CreateUser
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(User user)
+        public IActionResult CreateUser(User user)
         {
-            // Убираем проверку роли из ModelState, чтобы избежать ошибок валидации
             ModelState.Remove("Role");
 
             if (ModelState.IsValid)
             {
-                // Проверяем, существует ли пользователь с таким логином
                 var existingUser = _context.Users
                     .FirstOrDefault(u => u.Login.ToLower() == user.Login.ToLower());
 
@@ -75,7 +72,6 @@ namespace YourProjectName.Controllers
                     return View(user);
                 }
 
-                // Добавляем пользователя
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
@@ -87,8 +83,8 @@ namespace YourProjectName.Controllers
             return View(user);
         }
 
-        // GET: Users/Edit/5
-        public IActionResult Edit(int? id)
+        // GET: Users/EditUser/5
+        public IActionResult EditUser(int? id)
         {
             if (id == null)
             {
@@ -105,27 +101,24 @@ namespace YourProjectName.Controllers
             return View(user);
         }
 
-        // POST: Users/Edit/5
+        // POST: Users/EditUser/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, User user)
+        public IActionResult EditUser(int id, User user)
         {
             if (id != user.IdUser)
             {
                 return NotFound();
             }
 
-            // Убираем проверку роли из ModelState
             ModelState.Remove("Role");
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    // Проверяем уникальность логина (исключая текущего пользователя)
                     var existingUser = _context.Users
-                        .FirstOrDefault(u => u.Login.ToLower() == user.Login.ToLower()
-                                            && u.IdUser != id);
+                        .FirstOrDefault(u => u.Login.ToLower() == user.Login.ToLower() && u.IdUser != id);
 
                     if (existingUser != null)
                     {
@@ -157,8 +150,8 @@ namespace YourProjectName.Controllers
             return View(user);
         }
 
-        // GET: Users/Delete/5
-        public IActionResult Delete(int? id)
+        // GET: Users/DeleteUser/5
+        public IActionResult DeleteUser(int? id)
         {
             if (id == null)
             {
@@ -177,10 +170,10 @@ namespace YourProjectName.Controllers
             return View(user);
         }
 
-        // POST: Users/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Users/DeleteUser/5
+        [HttpPost, ActionName("DeleteUser")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public IActionResult DeleteUserConfirmed(int id)
         {
             var user = _context.Users.Find(id);
             if (user != null)
@@ -194,8 +187,8 @@ namespace YourProjectName.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Users/ChangePassword/5
-        public IActionResult ChangePassword(int? id)
+        // GET: Users/ChangePasswordUser/5
+        public IActionResult ChangePasswordUser(int? id)
         {
             if (id == null)
             {
@@ -217,10 +210,10 @@ namespace YourProjectName.Controllers
             return View(model);
         }
 
-        // POST: Users/ChangePassword/5
+        // POST: Users/ChangePasswordUser/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ChangePassword(ChangePasswordViewModel model)
+        public IActionResult ChangePasswordUser(ChangePasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -230,7 +223,6 @@ namespace YourProjectName.Controllers
                     return NotFound();
                 }
 
-                // Обновляем пароль
                 user.Password = model.NewPassword;
                 _context.Update(user);
                 _context.SaveChanges();
@@ -248,22 +240,21 @@ namespace YourProjectName.Controllers
         }
     }
 
-    // ViewModel для смены пароля
     public class ChangePasswordViewModel
     {
         public int IdUser { get; set; }
-        public string Login { get; set; }
+        public string? Login { get; set; }
 
         [Required(ErrorMessage = "Введите новый пароль")]
         [DataType(DataType.Password)]
         [StringLength(50, MinimumLength = 4, ErrorMessage = "Пароль должен быть от 4 до 50 символов")]
         [Display(Name = "Новый пароль")]
-        public string NewPassword { get; set; }
+        public string? NewPassword { get; set; }
 
         [Required(ErrorMessage = "Подтвердите пароль")]
         [DataType(DataType.Password)]
         [Compare("NewPassword", ErrorMessage = "Пароли не совпадают")]
         [Display(Name = "Подтверждение пароля")]
-        public string ConfirmPassword { get; set; }
+        public string? ConfirmPassword { get; set; }
     }
 }

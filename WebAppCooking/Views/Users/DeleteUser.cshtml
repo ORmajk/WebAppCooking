@@ -1,7 +1,7 @@
-﻿@model WebAppCooking.Models.Recipe
+﻿@model WebAppCooking.Models.User
 
 @{
-    ViewData["Title"] = "Удаление рецепта";
+    ViewData["Title"] = "Удаление пользователя";
 }
 
 <!DOCTYPE html>
@@ -10,47 +10,43 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="~/css/StyleAdmins.css" />
+    <link rel="stylesheet" href="~/css/StyleDeleteUsers.css" />
 </head>
 <body style="background-color: #FFAA00">
     <div class="auth-wrapper">
-        <div class="auth-container" style="max-width: 600px;">
+        <div class="auth-container" style="max-width: 500px;">
             <div class="auth-card">
-                <div class="auth-header">
-                    <h4 class="auth-title">Удаление рецепта</h4>
+                <div class="auth-header" style="background-color: #FF9639">
+                    <h4 class="auth-title">Удаление пользователя</h4>
                 </div>
                 <div class="auth-body">
                     <div class="delete-confirmation">
-                        <h5>Вы уверены, что хотите удалить этот рецепт?</h5>
+                        <h5>Вы уверены, что хотите удалить пользователя?</h5>
 
-                        <div class="recipe-details">
+                        <div class="user-details">
                             <div class="detail-item">
-                                <strong>Название:</strong>
-                                <span>@Model.RecipeName</span>
+                                <strong>Логин:</strong>
+                                <span>@Model.Login</span>
                             </div>
                             <div class="detail-item">
-                                <strong>Описание:</strong>
-                                <span>@Model.RecipeDescription</span>
+                                <strong>Имя:</strong>
+                                <span>@Model.Name</span>
                             </div>
                             <div class="detail-item">
-                                <strong>Тип:</strong>
-                                <span>@(Model.RecipeType?.RecipeTypeName ?? "Не указан")</span>
+                                <strong>Возраст:</strong>
+                                <span>@Model.Age</span>
                             </div>
                             <div class="detail-item">
-                                <strong>Автор:</strong>
-                                <span>@(Model.Author?.AuthorName ?? "Не указан")</span>
-                            </div>
-                            <div class="detail-item">
-                                <strong>Дата:</strong>
-                                <span>@Model.RecipeDate?.ToString("dd.MM.yyyy")</span>
+                                <strong>Роль:</strong>
+                                <span>@(Model.Role?.RoleName ?? "Не указана")</span>
                             </div>
                         </div>
 
-                        <form asp-action="Delete" method="post">
-                            <input type="hidden" asp-for="IdRecipe" />
+                        <form asp-action="DeleteUser" method="post">
+                            <input type="hidden" asp-for="IdUser" />
                             <div class="delete-actions">
-                                <button type="submit" class="btn-delete-confirm">Удалить</button>
-                                <a asp-action="Index" class="btn-cancel">Отмена</a>
+                                <button type="submit" class="btn-delete-confirm" style="background-color: #ef4444">Удалить</button>
+                                <a asp-action="Index" class="btn-cancel" style="background-color: #6c757d">Отмена</a>
                             </div>
                         </form>
                     </div>
@@ -60,77 +56,3 @@
     </div>
 </body>
 </html>
-
-@section Styles {
-    <style>
-        .delete-confirmation h5 {
-            color: #495057;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .recipe-details {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-        }
-
-        .detail-item {
-            margin-bottom: 10px;
-            padding: 8px 0;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-            .detail-item:last-child {
-                border-bottom: none;
-            }
-
-            .detail-item strong {
-                display: inline-block;
-                width: 100px;
-                color: #495057;
-            }
-
-            .detail-item span {
-                color: #6c757d;
-            }
-
-        .delete-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .btn-delete-confirm {
-            padding: 10px 30px;
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-            .btn-delete-confirm:hover {
-                background-color: #c82333;
-            }
-
-        .btn-cancel {
-            padding: 10px 30px;
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-            .btn-cancel:hover {
-                background-color: #5a6268;
-                color: white;
-            }
-    </style>
-}

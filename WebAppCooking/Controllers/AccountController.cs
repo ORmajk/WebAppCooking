@@ -40,11 +40,11 @@ public class AccountController : Controller
 
                     if (user.Role?.RoleName == "Admin")
                     {
-                        return RedirectToAction("IndexRecipeAdmin", "RecipeAdmin");
+                        return RedirectToAction("Index", "RecipeAdmin");
                     }
                     else
                     {
-                        return RedirectToAction("IndexRecipeUser", "RecipeUser");
+                        return RedirectToAction("Index", "RecipeUser");
                     }
                 }
 
@@ -96,7 +96,7 @@ public class AccountController : Controller
             HttpContext.Session.SetString("UserLogin", user.Login);
             HttpContext.Session.SetString("UserName", user.Name);
 
-            return RedirectToAction("IndexMenu", "Home");
+            return RedirectToAction("Index", "Home");
         }
         return View(model);
     }

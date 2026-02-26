@@ -65,18 +65,18 @@
                                                 <span class="role-badge">@item.Role?.RoleName</span>
                                             </td>
                                             <td class="cell-actions">
-                                                <a asp-action="Edit" asp-route-id="@item.IdUser" 
+                                                <a asp-action="EditUser" asp-route-id="@item.IdUser" 
                                                    class="btn-action btn-edit"
                                                    title="Редактировать">
                                                     <span>Редактировать</span>
                                                 </a>
-                                                <a asp-action="ChangePassword" asp-route-id="@item.IdUser" 
+                                                <a asp-action="ChangePasswordUser" asp-route-id="@item.IdUser" 
                                                    class="btn-action btn-password"
                                                    style="background-color: #6b7280 "
                                                    title="Сменить пароль">
                                                     <span>Сменить пароль</span>
                                                 </a>
-                                                <a asp-action="Delete" asp-route-id="@item.IdUser" 
+                                                <a asp-action="DeleteUser" asp-route-id="@item.IdUser" 
                                                    class="btn-action btn-delete" 
                                                    style="background-color: #ef4444 "
                                                    title="Удалить"

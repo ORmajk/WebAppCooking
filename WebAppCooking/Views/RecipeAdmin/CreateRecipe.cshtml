@@ -3,6 +3,17 @@
 @{
     ViewData["Title"] = "Добавление рецепта";
 }
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -17,59 +28,58 @@
         <div class="auth-container" style="max-width: 800px;">
             <div class="auth-card">
                 <div class="auth-header">
-                    <h4 class="auth-title">Добавление нового рецепта</h4>
+                    <h4 class="auth-title" style="color: white">Добавление нового рецепта</h4>
                 </div>
                 <div class="auth-body">
-                    <form asp-action="Create" method="post" enctype="multipart/form-data">
+                    <form asp-action="CreateRecipe" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                         <div class="form-group">
-                            <label asp-for="RecipeName" class="control-label"></label>
+                            <label asp-for="RecipeName" class="control-label" style="color: white">Название рецепта</label>
                             <input asp-for="RecipeName" class="form-control" />
                             <span asp-validation-for="RecipeName" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="RecipeDescription" class="control-label"></label>
+                            <label asp-for="RecipeDescription" class="control-label" style="color: white">Описание</label>
                             <textarea asp-for="RecipeDescription" class="form-control" rows="3"></textarea>
                             <span asp-validation-for="RecipeDescription" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="RecipeImage" class="control-label"></label>
+                            <label asp-for="RecipeImage" class="control-label" style="color: white">Изображение</label>
                             <input asp-for="RecipeImage" class="form-control" placeholder="Например: image.jpg" />
                             <span asp-validation-for="RecipeImage" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="RecipeDate" class="control-label"></label>
+                            <label asp-for="RecipeDate" class="control-label" style="color: white">Дата</label>
                             <input asp-for="RecipeDate" class="form-control" type="date" />
                             <span asp-validation-for="RecipeDate" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="IdRecipeType" class="control-label">Тип рецепта</label>
-                            <select asp-for="IdRecipeType" class="form-control" asp-items="ViewBag.RecipeTypeId">
+                            <label asp-for="IdRecipeType" class="control-label" style="color: white">Тип рецепта</label>
+                            <select asp-for="IdRecipeType" class="form-control" asp-items="ViewBag.IdRecipeType">
                                 <option value="">Выберите тип</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="IdAuthor" class="control-label">Автор</label>
-                            <select asp-for="IdAuthor" class="form-control" asp-items="ViewBag.AuthorId">
+                            <label asp-for="IdAuthor" class="control-label" style="color: white">Автор</label>
+                            <select asp-for="IdAuthor" class="form-control" asp-items="ViewBag.IdAuthor">
                                 <option value="">Выберите автора</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label">Ингредиенты</label>
+                            <label class="control-label" style="color: white">Ингредиенты</label>
                             <select name="selectedIngredients" class="form-control" multiple asp-items="ViewBag.Ingredients"></select>
-                            <small class="form-text text-muted">Удерживайте Ctrl для выбора нескольких ингредиентов</small>
                         </div>
 
                         <div class="form-actions">
-                            <button type="submit" class="btn-save">Сохранить</button>
-                            <a asp-action="Index" class="btn-cancel">Отмена</a>
+                            <button type="submit" class="btn-save" style="color: white">Сохранить</button>
+                            <a asp-action="Index" class="btn-cancel" style="color: white">Отмена</a>
                         </div>
                     </form>
                 </div>

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -6,6 +6,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>d8892727-48b1-4d81-88d4-b84e3b167435</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Users\CreateUser.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Views\Users\CreateUser.cshtml" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="wwwroot\images\Gerb.png" />

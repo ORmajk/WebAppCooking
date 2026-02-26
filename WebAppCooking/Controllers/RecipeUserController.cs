@@ -42,7 +42,7 @@ namespace WebAppCooking.Controllers
                 .Include(r => r.RecipeType)
                 .Include(r => r.Author)
                 .Include(r => r.RecipeIngredients)
-                    .ThenInclude(ri => ri.Ingredients)
+                    .ThenInclude(ri => ri.Ingredient)
                 .AsQueryable();
 
             // Фильтрация по типу рецепта
@@ -121,7 +121,7 @@ namespace WebAppCooking.Controllers
                 .Include(r => r.RecipeType)
                 .Include(r => r.Author)
                 .Include(r => r.RecipeIngredients)
-                    .ThenInclude(ri => ri.Ingredients)
+                    .ThenInclude(ri => ri.Ingredient)
                 .FirstOrDefault(m => m.IdRecipe == id);
 
             if (recipe == null)
