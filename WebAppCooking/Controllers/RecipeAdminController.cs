@@ -28,7 +28,7 @@ public class RecipeAdminController : Controller
             var userRole = HttpContext.Session.GetString("UserRole");
             if (userRole != "Admin")
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("IndexMenu", "Home");
             }
 
             // Получение данных с включением связанных сущностей

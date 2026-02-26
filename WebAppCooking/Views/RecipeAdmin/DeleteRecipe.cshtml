@@ -1,0 +1,62 @@
+﻿@model WebAppCooking.Models.Recipe
+
+@{
+    ViewData["Title"] = "Удаление рецепта";
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/StyleDeleteRecipe.css" />
+</head>
+<body style="background-color: #FFAA00">
+    <div class="auth-wrapper">
+        <div class="auth-container" style="max-width: 600px;">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h4 class="auth-title">Удаление рецепта</h4>
+                </div>
+                <div class="auth-body">
+                    <div class="delete-confirmation">
+                        <h5>Вы уверены, что хотите удалить этот рецепт?</h5>
+
+                        <div class="recipe-details">
+                            <div class="detail-item">
+                                <strong>Название:</strong>
+                                <span>@Model.RecipeName</span>
+                            </div>
+                            <div class="detail-item">
+                                <strong>Описание:</strong>
+                                <span>@Model.RecipeDescription</span>
+                            </div>
+                            <div class="detail-item">
+                                <strong>Тип:</strong>
+                                <span>@(Model.RecipeType?.RecipeTypeName ?? "Не указан")</span>
+                            </div>
+                            <div class="detail-item">
+                                <strong>Автор:</strong>
+                                <span>@(Model.Author?.AuthorName ?? "Не указан")</span>
+                            </div>
+                            <div class="detail-item">
+                                <strong>Дата:</strong>
+                                <span>@Model.RecipeDate?.ToString("dd.MM.yyyy")</span>
+                            </div>
+                        </div>
+
+                        <form asp-action="Delete" method="post">
+                            <input type="hidden" asp-for="IdRecipe" />
+                            <div class="delete-actions">
+                                <button type="submit" class="btn-delete-confirm">Удалить</button>
+                                <a asp-action="Index" class="btn-cancel">Отмена</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
