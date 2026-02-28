@@ -104,7 +104,6 @@ namespace WebAppCooking.Controllers
                     break;
             }
 
-            // Получаем список типов для фильтра
             ViewBag.RecipeTypes = _context.RecipeTypes.ToList();
 
             return View(recipes.ToList());

@@ -3,12 +3,10 @@ using WebAppCooking.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Добавляем сервисы
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<UserAppContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// НАСТРОЙКА СЕССИЙ - ЭТО ВАЖНО!
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -33,7 +31,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// ВАЖНО: UseSession ДОЛЖЕН быть здесь!
 app.UseSession();
 
 app.MapControllerRoute(

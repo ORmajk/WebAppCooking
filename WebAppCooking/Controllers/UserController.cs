@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -72,6 +73,39 @@ namespace YourProjectName.Controllers
                     return View(user);
                 }
 
+                if (user.Age < 18 || user.Age > 120)
+                {
+                    ModelState.AddModelError("Age", "Возраст должен быть от 18 до 120 лет");
+                    ViewBag.Roles = new SelectList(_context.Roles, "IdRole", "RoleName", user.IdRole);
+                    return View(user);
+                }
+
+                if (!string.IsNullOrEmpty(user.Password))
+                {
+                    if (user.Password.Length < 6)
+                    {
+                        ModelState.AddModelError("Password", "Пароль должен содержать не менее 6 символов");
+                        ViewBag.Roles = new SelectList(_context.Roles, "IdRole", "RoleName", user.IdRole);
+                        return View(user);
+                    }
+
+                    bool hasLetter = user.Password.Any(char.IsLetter);
+                    bool hasDigit = user.Password.Any(char.IsDigit);
+
+                    if (!hasLetter || !hasDigit)
+                    {
+                        ModelState.AddModelError("Password", "Пароль должен содержать хотя бы одну букву и одну цифру");
+                        ViewBag.Roles = new SelectList(_context.Roles, "IdRole", "RoleName", user.IdRole);
+                        return View(user);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("Password", "Пароль не может быть пустым");
+                    ViewBag.Roles = new SelectList(_context.Roles, "IdRole", "RoleName", user.IdRole);
+                    return View(user);
+                }
+
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
@@ -104,14 +138,14 @@ namespace YourProjectName.Controllers
         // POST: Users/EditUser/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditUser(int id, User user)
+        public IActionResult EditUser(int id, User user, int IdRole)
         {
             if (id != user.IdUser)
             {
                 return NotFound();
             }
 
-            ModelState.Remove("Role");
+            user.IdRole = IdRole;
 
             if (ModelState.IsValid)
             {
@@ -131,6 +165,7 @@ namespace YourProjectName.Controllers
                     _context.SaveChanges();
 
                     TempData["SuccessMessage"] = "Пользователь успешно обновлен";
+                   
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -143,11 +178,13 @@ namespace YourProjectName.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+             return RedirectToAction(nameof(Index));
+
             }
 
             ViewBag.Roles = new SelectList(_context.Roles, "IdRole", "RoleName", user.IdRole);
             return View(user);
+            
         }
 
         // GET: Users/DeleteUser/5

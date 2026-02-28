@@ -8,14 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Users\CreateUser.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Views\Users\CreateUser.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\images\Gerb.png" />
   </ItemGroup>
 

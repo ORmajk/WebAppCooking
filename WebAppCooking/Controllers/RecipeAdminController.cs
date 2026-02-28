@@ -39,7 +39,6 @@ namespace WebAppCooking.Controllers
                 .Include(r => r.RecipeType)
                 .Include(r => r.Author)
                 .Include(r => r.RecipeIngredients)
-                    .ThenInclude(ri => ri.Ingredient)
                 .AsQueryable();
 
             if (recipeTypeId.HasValue && recipeTypeId.Value > 0)

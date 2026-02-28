@@ -20,7 +20,8 @@
                     <h4 class="auth-title">Редактирование пользователя</h4>
                 </div>
                 <div class="auth-body">
-                    <form asp-action="EditUser" method="post">
+                    <form asp-action="EditUser" method="post" novalidate>
+                        @Html.AntiForgeryToken()
                         <input type="hidden" asp-for="IdUser" />
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -51,13 +52,18 @@
                         </div>
 
                         <div class="form-actions">
-                            <button type="submit" class="btn-save" style="background-color: #eab308">Сохранить</button>
-                            <a asp-action="Index" class="btn-cancel" style="background-color: #6c757d">Отмена</a>
+                            <button type="submit" class="btn btn-success" style="background-color: #eab308">Сохранить</button>
+                            <a asp-action="Index" class="btn btn-secondary" style="background-color: #6c757d">Отмена</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
 </body>
 </html>

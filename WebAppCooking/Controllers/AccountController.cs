@@ -38,6 +38,7 @@ public class AccountController : Controller
                     HttpContext.Session.SetString("UserName", user.Name ?? "");
                     HttpContext.Session.SetString("UserRole", user.Role?.RoleName ?? "");
 
+                    // Проверка прав администратора
                     if (user.Role?.RoleName == "Admin")
                     {
                         return RedirectToAction("Index", "RecipeAdmin");
